@@ -4,6 +4,12 @@ This directory is a copy from FreeBSD Ports directory `converters/libiconv` of `
 
 Kenji Rikitake comments out the IGNORE flag in the original Makefile.
 
+## CAUTION
+
+DO NOT PERFORM `make install` after the compilation of the GNU libiconv Port. 
+
+*Installing the Port here will break the assumption of FreeBSD 10 and later that only the base iconv library should be linked.*
+
 ## How to compile and install the shared libraries
 
     # Shared library must be compiled as root
