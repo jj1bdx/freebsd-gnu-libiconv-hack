@@ -1,7 +1,7 @@
 # Running command with GNU libiconv preloaded to fix ISO-2022-JP and other character conversion problems
 
 * Copyright (c) 2013 SATOH Fumiyasu @ OSS Technology Corp., Japan, and Kenji Rikitake
-* License: BSD-like (2-clause, see preload-gnuiconv.sh)
+* License: BSD (2-clause, see preload-gnuiconv.sh)
 
 * This program uses the portion of the code from Fumiyasu Satoh's [wcwidth-cjk](https://GitHub.com/fumiyas/wcwidth-cjk).
 
