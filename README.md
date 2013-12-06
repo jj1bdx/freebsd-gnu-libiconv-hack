@@ -5,6 +5,25 @@
 
 * This program uses the portion of the code from Fumiyasu Satoh's [wcwidth-cjk](https://GitHub.com/fumiyas/wcwidth-cjk).
 
+## UPDATE 6-DEC-2013 on vim 7.4.110
+
+* Important note: latest editors/vim (7.4.110) does not handle auto conversion of sent mail to ISO-2022-JP from mutt. The workaround is to use UTF-8 only for mutt `send_charset` in .muttrc as:
+
+    # for Japanese processing
+    set charset="utf-8"
+    # THIS DOES NOT WORK: set send_charset="us-ascii:iso-2022-jp:utf-8"
+    # IMPORTANT: iso-2022-jp conversion does not work well on FreeBSD 10 libc iconv
+    # Workaround to use utf-8 only for transmission
+    set send_charset="us-ascii:utf-8" # <-- changed here
+    set assumed_charset="iso-2022-jp:euc-jp:shift_jis:utf-8"
+    set attach_charset="iso-2022-jp:euc-jp:shift_jis:utf-8"
+
+* Note 2: vim image *without* preloaded GNU iconv will work too, when only UTF-8 is used for `send_charset`.
+
+* Note 3: using Emacs (tested version 24) works without problem even with ISO-2022-JP charset is enabled in `send_charset`
+
+* Summary in Japanese: vim 7.4.110では，GNU iconvをpreloadしてもISO-2022-JPへの変換は動作しない．対処法としては，`send_charset`を上記の通りUTF-8のみに設定することで回避できる．あるいは，Emacs (version 24でテスト) を使えば問題は起きない．
+
 ## What this library and script do
 
 * A local FreeBSD Port-style directory and the distfiles of GNU libiconv 1.14, the standard for FreeBSD 9-STABLE and before (which is actually a modified copy from the FreeBSD Port `converters/libiconv`)
