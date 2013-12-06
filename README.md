@@ -9,14 +9,14 @@
 
 * Important note: latest editors/vim (7.4.110) does not handle auto conversion of sent mail to ISO-2022-JP from mutt. The workaround is to use UTF-8 only for mutt `send_charset` in .muttrc as:
 
-    # for Japanese processing
-    set charset="utf-8"
-    # THIS DOES NOT WORK: set send_charset="us-ascii:iso-2022-jp:utf-8"
-    # IMPORTANT: iso-2022-jp conversion does not work well on FreeBSD 10 libc iconv
-    # Workaround to use utf-8 only for transmission
-    set send_charset="us-ascii:utf-8" # <-- changed here
-    set assumed_charset="iso-2022-jp:euc-jp:shift_jis:utf-8"
-    set attach_charset="iso-2022-jp:euc-jp:shift_jis:utf-8"
+         # for Japanese processing
+         set charset="utf-8"
+         # THIS DOES NOT WORK: set send_charset="us-ascii:iso-2022-jp:utf-8"
+         # IMPORTANT: iso-2022-jp conversion does not work well on FreeBSD 10 libc iconv
+         #  Workaround to use utf-8 only for transmission
+         set send_charset="us-ascii:utf-8" # <-- changed here
+         set assumed_charset="iso-2022-jp:euc-jp:shift_jis:utf-8"
+         set attach_charset="iso-2022-jp:euc-jp:shift_jis:utf-8"
 
 * Note 2: vim image *without* preloaded GNU iconv will work too, when only UTF-8 is used for `send_charset`.
 
