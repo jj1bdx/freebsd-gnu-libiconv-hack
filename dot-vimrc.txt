@@ -1,0 +1,191 @@
+" $id: .Vimrc,v 3.5 2013/11/14 09:27:49 kenji Exp kenji $
+" Forced to use English or C locale
+if has('unix')
+   language messages C
+else
+   language messages en
+endif
+let $LANG = 'en'
+
+" Japanese settings
+" see
+" https://sites.google.com/site/fudist/Home/vim-nihongo-ban/vim-utf8#encode.vim
+
+set encoding=utf-8
+scriptencoding utf-8
+
+if &encoding == 'utf-8'
+  set fileencodings=ucs-bom,utf-8,default,latin1
+else
+  set fileencodings=ucs-bom
+endif
+
+if has('iconv')
+  if &encoding == 'utf-8'
+    set fileencodings=ucs-bom,utf-8,iso-2022-jp,euc-jp,cp932,utf-16le,utf-16,default,latin1
+  else
+    set fileencodings=ucs-bom,utf-8,ucs-2le,ucs-2,iso-2022-jp,euc-jp,cp932
+  endif
+  " iconv eucjp-ms capability check
+  if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
+    let &fileencodings=substitute(&fileencodings, 'iso-2022-jp', 'iso-2022-jp-3', 'g')
+    let &fileencodings=substitute(&fileencodings, 'euc-jp', 'euc-jp-ms', 'g')
+  " iconv JISX0213 capability check
+  elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+    let &fileencodings=substitute(&fileencodings, 'iso-2022-jp', 'iso-2022-jp-3', 'g')
+    let &fileencodings=substitute(&fileencodings, 'euc-jp', 'euc-jisx0213', 'g')
+  endif
+endif
+
+" if no Japanese, use encoding as fileencoding
+if has('autocmd')
+  function! AU_ReCheck_FENC()
+    if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
+      let &fileencoding=&encoding
+    endif
+  endfunction
+  autocmd BufReadPost * call AU_ReCheck_FENC()
+endif
+" automatic line terminator recognition
+set fileformats=unix,dos,mac
+" treat ambiguous width characters as double-width
+if exists('&ambiwidth')
+  set ambiwidth=double
+endif
+" end of Japanese configuration script
+
+" SKK settings
+let g:eskk#directory = "~/.eskk"
+let g:eskk#dictionary = { 'path': "~/.skk.evim.jisyo", 'sorted': 0, 'encoding': 'utf-8', }
+" use utf-8 jisyo: vim on FreeBSD does not properly handle euc-jp dictionary 
+let g:eskk#large_dictionary = { 'path': "~/.eskk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'euc-jp', }
+"let g:eskk#large_dictionary = { 'path': "~/.eskk/SKK-JISYO.L.utf-8", 'sorted': 1, 'encoding': 'utf-8', }
+" period and comma remap
+autocmd User eskk-initialize-pre call s:eskk_initial_pre()
+function! s:eskk_initial_pre()
+    let t = eskk#table#new('rom_to_hira*', 'rom_to_hira')
+    call t.add_map(',', '，')
+    call t.add_map('.', '．') 
+    call eskk#register_mode_table('hira', t)
+    let t = eskk#table#new('rom_to_kata*', 'rom_to_kata')
+    call t.add_map(',', '，')
+    call t.add_map('.', '．')
+    call eskk#register_mode_table('kata', t)
+endfunction
+
+" solarized
+
+syntax enable
+set background=dark
+colorscheme solarized
+
+" An example for a vimrc file.
+" see /usr/local/share/vim/vim73/vimrc.example
+"
+" Maintainer:	Bram Moolenaar <Bram@vim.org>
+" Last change:	2008 Jul 02
+"
+" To use it, copy it to
+"     for Unix and OS/2:  ~/.vimrc
+"	      for Amiga:  s:.vimrc
+"  for MS-DOS and Win32:  $VIM\_vimrc
+"	    for OpenVMS:  sys$login:.vimrc
+
+" When started as "evim", evim.vim will already have done these settings.
+if v:progname =~? "evim"
+  finish
+endif
+
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+" local mods
+set modeline
+" vim: set ts=4 sw=4 ss=4 et :
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+filetype on
+filetype indent on
+filetype plugin on
+set laststatus=2
+syntax on
+
+if has("vms")
+  set nobackup		" do not keep a backup file, use versions instead
+else
+  set backup		" keep a backup file
+endif
+set history=50		" keep 50 lines of command line history
+set ruler		" show the cursor position all the time
+set showcmd		" display incomplete commands
+set incsearch		" do incremental searching
+
+" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
+" let &guioptions = substitute(&guioptions, "t", "", "g")
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+  set mouse=a
+endif
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  " Also don't do it when the mark is in the first line, that is the default
+  " position when opening a file.
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+
+  augroup END
+
+else
+
+  set autoindent		" always set autoindenting on
+
+endif " has("autocmd")
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+		  \ | wincmd p | diffthis
+endif
