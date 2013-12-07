@@ -7,7 +7,7 @@
 
 ## UPDATE 7-DEC-2013
 
-* Kenji Rikitake concludes GNU iconv or Citrus iconv *did not* involve in the problem.
+* Kenji Rikitake concludes GNU iconv or Citrus iconv *did not* involve in the problem, at least from 10.0-BETA4. See <http://svnweb.freebsd.org/base?view=revision&revision=258316>
 * Kenji Rikitake concluded the cluttered Japanese code detection script in his dot-vimrc caused the problem.
 * The latest `editors/vim` with base iconv *no longer has to be replaced* by the GNU libiconv, to be used with `mail/mutt`. 
 * Added `dot-vimrc.txt` (UTF-8 encoded) to show an example for UTF-8-encoded Japanese environment.
