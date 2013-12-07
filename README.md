@@ -12,7 +12,7 @@
 * The latest `editors/vim` with base iconv *no longer has to be replaced* by the GNU libiconv, to be used with `mail/mutt`. 
 * Added `dot-vimrc.txt` (UTF-8 encoded) to show an example for UTF-8-encoded Japanese environment.
 * The old README.md exists in `OLD.README.md`.
-* Summary in Japanese: muttでの問題は GNU/Citrus iconv の問題ではなく，.vimrcでの日本語文字コード変換に問題があったことが理由であろうと結論を出した．古いREADME.mdはOLD.README.mdに参考のため保管してある．
+* Summary in Japanese: muttでの問題は少なくとも10.0-BETA4以降では GNU/Citrus iconv の問題ではなく，.vimrcでの日本語文字コード変換に問題があったことが理由であろうと結論を出した．古いREADME.mdはOLD.README.mdに参考のため保管してある．
 
 ## What this library and script do
 
