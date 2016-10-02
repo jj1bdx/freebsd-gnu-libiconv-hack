@@ -5,6 +5,10 @@
 
 * This program uses the portion of the code from Fumiyasu Satoh's [wcwidth-cjk](https://GitHub.com/fumiyas/wcwidth-cjk).
 
+## WARNING: this program is not applicable to FreeBSD 11 or later
+
+* The locale system has been largely changed between FreeBSD 11 and FreeBSD 10 or older versions.
+
 ## UPDATE 7-DEC-2013
 
 * Kenji Rikitake concludes GNU iconv or Citrus iconv *did not* involve in the problem, at least from 10.0-BETA4. See <http://svnweb.freebsd.org/base?view=revision&revision=258316>
